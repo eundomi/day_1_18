@@ -37,6 +37,7 @@ function App() {
         ></Route>
         <Route path="/read/:id" element={<Read></Read>}></Route>
         <Route path="/create" element={<Create></Create>}></Route>
+        <Route path="/update/:id" element={<Update></Update>}></Route>
       </Routes>
       <Routes>
         <Route path="/" element={<Control></Control>}></Route>
