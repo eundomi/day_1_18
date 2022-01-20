@@ -5,7 +5,7 @@ import { Nav } from "./Nav";
 import { Article } from "./Article";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Routes, Route, Link, useParams } from "react-router-dom";
+import { Routes, Route, Link, useParams, useNavigate } from "react-router-dom";
 import { Read } from "./Read";
 import { Create } from "./Create";
 import { Update } from "./Update";
@@ -48,12 +48,29 @@ function App() {
 }
 function Control() {
   const { id } = useParams();
+  const dispatch = useDispatch();
+  const go = useNavigate();
   let contextUI = null;
   if (id !== undefined) {
     contextUI = (
       <>
         <li>
           <Link to={"/update/" + id}>update</Link>
+        </li>
+        <li>
+          <input
+            type="button"
+            value="delete"
+            onClick={async () => {
+              await fetch("/topics/" + id, {
+                method: "DELETE",
+              });
+
+              const response = await fetch("/topics");
+              const topics = await response.json();
+              dispatch({ type: "SET_TOPICS", topics: topics });
+            }}
+          ></input>
         </li>
       </>
     );
@@ -63,6 +80,7 @@ function Control() {
       <li>
         <Link to="/create">create</Link>
       </li>
+
       {contextUI}
     </ul>
   );
